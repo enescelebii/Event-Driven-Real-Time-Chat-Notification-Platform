@@ -1,11 +1,12 @@
 package com.eventdriven.common.mapper;
 
 import com.eventdriven.common.dto.MessageDTO;
-import com.eventdriven.chatmessageservice.entity.Message;
+
+import com.eventdriven.common.entity.MessageStub;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface MessageMapper {
-    MessageDTO toDTO(Message message);
-    Message toEntity(MessageDTO messageDTO);
+    MessageDTO toDTO(MessageStub message);
+    MessageStub toEntity(MessageDTO messageDTO);
 }

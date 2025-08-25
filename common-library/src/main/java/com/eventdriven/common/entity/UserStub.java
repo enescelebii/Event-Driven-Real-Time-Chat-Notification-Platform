@@ -1,18 +1,15 @@
-package com.eventdriven.common.dto;
+package com.eventdriven.common.entity;
 
-import lombok.Builder;
 import lombok.Data;
+
 import java.util.Set;
 
 @Data
-@Builder
-public class UserDTO {
-
+public class UserStub {
     private Long id;
     private String username;
     private String email;
-    private String avatarUrl;
     private String password;
+    private String avatarUrl;
     private Set<String> roles;
 }
-
