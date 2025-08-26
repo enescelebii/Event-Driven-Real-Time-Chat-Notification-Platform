@@ -1,6 +1,8 @@
 package com.eventdriven.authservice.dto;
 
+import com.eventdriven.authservice.entity.FriendRequest.Status;
+
 public record RespondFriendRequest(
         Long requestId,
-        String action // ACCEPT or REJECT
+        Status action
 ) {}

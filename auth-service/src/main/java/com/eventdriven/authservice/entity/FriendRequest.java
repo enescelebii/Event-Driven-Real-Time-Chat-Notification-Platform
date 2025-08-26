@@ -15,8 +15,11 @@ public class FriendRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long senderId;
-    private Long receiverId;
+    @ManyToOne
+    private User sender;
+
+    @ManyToOne
+    private User receiver;
 
     @Enumerated(EnumType.STRING)
     private Status status;

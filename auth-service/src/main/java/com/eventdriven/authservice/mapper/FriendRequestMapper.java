@@ -9,6 +9,5 @@ import org.mapstruct.Mapper;
 public interface FriendRequestMapper {
 
     FriendRequestDTO toDTO(FriendRequest entity);
-
     FriendRequest toEntity(FriendRequestDTO dto);
 }

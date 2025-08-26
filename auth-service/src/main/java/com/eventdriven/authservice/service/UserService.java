@@ -1,7 +1,5 @@
 package com.eventdriven.authservice.service;
 
-
-
 import com.eventdriven.authservice.entity.User;
 import com.eventdriven.authservice.repository.UserRepository;
 
@@ -27,5 +25,4 @@ public class UserService {
     Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
-
 }

@@ -2,6 +2,7 @@ package com.eventdriven.authservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.Data;
 
 import java.util.Set;
 
@@ -17,7 +18,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false, length = 50)
+    @Column(unique = true , length = 50)
     private String username;
 
     @Column(unique = true,  nullable = false, length = 100)
