@@ -1,13 +1,18 @@
 package com.eventdriven.authservice.controller;
 
 
+
 import com.eventdriven.authservice.dto.LoginRequest;
+import com.eventdriven.authservice.dto.RefreshTokenRequest;
 import com.eventdriven.authservice.dto.UserDTO;
+import com.eventdriven.authservice.dto.AuthResponse;
+import com.eventdriven.authservice.entity.User;
+import com.eventdriven.authservice.repository.UserRepository;
 import com.eventdriven.authservice.security.JwtUtil;
 import com.eventdriven.authservice.service.AuthService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,35 +22,59 @@ public class AuthController {
 
     private final JwtUtil jwtUtil;
     private final AuthService authService;
+    private final UserRepository userRepository;
 
-    // DTO olarak password dönülmüyor
-    @Data
-    @AllArgsConstructor
-    public static class AuthResponse {
-        private Long id;
-        private String username;
-        private String email;
-        private String token;
-    }
 
 
     @PostMapping("/register")
     public AuthResponse register(@RequestBody UserDTO userDTO) {
-        UserDTO registeredUser = authService.register(userDTO);
-        String token = jwtUtil.generateToken(registeredUser.email());
-        return new AuthResponse(registeredUser.id(), registeredUser.username(), registeredUser.email(), token);
+        return authService.register(userDTO);
     }
 
     @PostMapping("/login")
     public AuthResponse login(@RequestBody LoginRequest loginRequest) {
-        UserDTO userDTO = authService.login(loginRequest.email(), loginRequest.password());
-        String token = jwtUtil.generateToken(userDTO.email());
-        return new AuthResponse(userDTO.id(), userDTO.username(), userDTO.email(), token);
+        return authService.login(loginRequest.email(), loginRequest.password());
+    }
+
+    @PostMapping("/refresh-token")
+    public AuthResponse refreshToken(@RequestBody RefreshTokenRequest request) {
+        String email = jwtUtil.extractUsername(request.refreshToken());
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!user.getRefreshToken().equals(request.refreshToken())) {
+            throw new RuntimeException("Invalid refresh token");
+        }
+
+        return authService.refreshToken(user);
     }
 
     @GetMapping("/{id}")
     public UserDTO getUser(@PathVariable Long id) {
         return authService.getUserById(id);
+    }
+
+    // Token üzerinden kullanıcı bilgisini döner
+    @GetMapping("/me")
+    public ResponseEntity<UserDTO> getMe(@RequestHeader("Authorization") String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        String token = authHeader.substring(7); // "Bearer " kısmını at
+        String email = jwtUtil.extractUsername(token);
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        UserDTO userDTO = new UserDTO(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getPassword()
+        );
+
+        return ResponseEntity.ok(userDTO);
     }
 
 

@@ -1,6 +1,8 @@
 package com.eventdriven.authservice.dto;
 
 public record AuthResponse(
-        UserDTO user,
-        String token
+       /* UserDTO user,
+        String token*/
+        String accessToken,
+        String refreshToken
 ) {}

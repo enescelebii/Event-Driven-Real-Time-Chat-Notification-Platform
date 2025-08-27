@@ -1,14 +1,16 @@
 package com.eventdriven.authservice.service;
-import com.eventdriven.authservice.dto.FriendRequestDTO;
+import com.eventdriven.authservice.dto.FriendRequestResponseDTO;
+import com.eventdriven.authservice.dto.UserResponseDTO;
 import com.eventdriven.authservice.entity.FriendRequest;
 import com.eventdriven.authservice.entity.User;
+import com.eventdriven.authservice.mapper.UserMapper;
 import com.eventdriven.authservice.repository.FriendRequestRepository;
 import com.eventdriven.authservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Service
@@ -17,55 +19,78 @@ public class FriendRequestService {
 
     private final FriendRequestRepository friendRequestRepository;
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-
-    public FriendRequestDTO acceptRequest(String receiverEmail, Long requestId) {
-        User receiver = userRepository.findByEmail(receiverEmail)
+    public FriendRequestResponseDTO sendFriendRequest(String senderEmail, Long receiverId) {
+        User sender = userRepository.findByEmail(senderEmail)
+                .orElseThrow(() -> new RuntimeException("Sender not found"));
+        User receiver = userRepository.findById(receiverId)
                 .orElseThrow(() -> new RuntimeException("Receiver not found"));
 
+        // Sadece PENDING veya ACCEPTED istekleri engelle
+        friendRequestRepository.findBySenderIdAndReceiverId(sender.getId(), receiver.getId())
+                .filter(req -> req.getStatus() != FriendRequest.Status.REJECTED)
+                .ifPresent(req -> {
+                    throw new RuntimeException("Friend request already sent.");
+                });
+
+        FriendRequest request = FriendRequest.builder()
+                .sender(sender)
+                .receiver(receiver)
+                .status(FriendRequest.Status.PENDING)
+                .build();
+        friendRequestRepository.save(request);
+
+        return FriendRequestResponseDTO.fromEntity(request);
+    }
+
+
+
+    public FriendRequestResponseDTO acceptRequest(String receiverEmail, Long requestId) {
+        User receiver = userRepository.findByEmail(receiverEmail)
+                .orElseThrow(() -> new RuntimeException("Receiver not found"));
         FriendRequest request = friendRequestRepository.findById(requestId)
                 .orElseThrow(() -> new RuntimeException("Request not found"));
 
-        if (!request.getReceiver().getId().equals(receiver.getId())) {
+        if (!request.getReceiver().getId().equals(receiver.getId()))
             throw new RuntimeException("You cannot accept this request.");
-        }
 
         request.setStatus(FriendRequest.Status.ACCEPTED);
         friendRequestRepository.save(request);
-        return FriendRequestDTO.fromEntity(request);
+
+        return FriendRequestResponseDTO.fromEntity(request);
     }
 
-    public FriendRequestDTO rejectRequest(String receiverEmail, Long requestId) {
+    public FriendRequestResponseDTO rejectRequest(String receiverEmail, Long requestId) {
         User receiver = userRepository.findByEmail(receiverEmail)
                 .orElseThrow(() -> new RuntimeException("Receiver not found"));
-
         FriendRequest request = friendRequestRepository.findById(requestId)
                 .orElseThrow(() -> new RuntimeException("Request not found"));
 
-        if (!request.getReceiver().getId().equals(receiver.getId())) {
+        if (!request.getReceiver().getId().equals(receiver.getId()))
             throw new RuntimeException("You cannot reject this request.");
-        }
 
         request.setStatus(FriendRequest.Status.REJECTED);
         friendRequestRepository.save(request);
-        return FriendRequestDTO.fromEntity(request);
+
+        return FriendRequestResponseDTO.fromEntity(request);
     }
 
-    public List<FriendRequestDTO> getReceivedRequests(String email) {
+    public List<FriendRequestResponseDTO> getReceivedRequests(String email) {
         User receiver = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Receiver not found"));
 
         return friendRequestRepository.findByReceiverId(receiver.getId()).stream()
-                .map(FriendRequestDTO::fromEntity)
+                .map(FriendRequestResponseDTO::fromEntity)
                 .toList();
     }
 
-    public List<FriendRequestDTO> getSentRequests(String email) {
+    public List<FriendRequestResponseDTO> getSentRequests(String email) {
         User sender = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Sender not found"));
 
         return friendRequestRepository.findBySenderId(sender.getId()).stream()
-                .map(FriendRequestDTO::fromEntity)
+                .map(FriendRequestResponseDTO::fromEntity)
                 .toList();
     }
 
@@ -77,19 +102,15 @@ public class FriendRequestService {
     /*
     Kabul edilmiş ve kabul ettiklerimiz arkadaşları databaseden çekip topluyoruz
      */
-    public List<User> getFriends(Long userId) {
-        List<FriendRequest> acceptedSent = friendRequestRepository.findBySender_IdAndStatus(userId, FriendRequest.Status.ACCEPTED);
-        List<FriendRequest> acceptedReceived = friendRequestRepository.findByReceiver_IdAndStatus(userId, FriendRequest.Status.ACCEPTED);
-
-        List<User> friends = acceptedSent.stream()
-                .map(FriendRequest::getReceiver)
-                .collect(Collectors.toList());
-
-        friends.addAll(acceptedReceived.stream()
-                .map(FriendRequest::getSender)
-                .toList());
-
-        return friends;
+    public List<UserResponseDTO> getFriends(Long userId) {
+        return Stream.concat(
+                        friendRequestRepository.findBySender_IdAndStatus(userId, FriendRequest.Status.ACCEPTED).stream()
+                                .map(FriendRequest::getReceiver),
+                        friendRequestRepository.findByReceiver_IdAndStatus(userId, FriendRequest.Status.ACCEPTED).stream()
+                                .map(FriendRequest::getSender)
+                )
+                .map(userMapper::toResponseDTO) // her User’ı UserResponseDTO’ya çevir
+                .toList(); // final listeyi oluştur
     }
     /*
         id uzerinde data base sorgusu atma
@@ -99,29 +120,9 @@ public class FriendRequestService {
                 friendRequestRepository.existsBySender_IdAndReceiver_IdAndStatus(userId2, userId1, FriendRequest.Status.ACCEPTED);
     }
 
-    public FriendRequestDTO sendFriendRequest(String senderEmail, Long receiverId) {
-        User sender = userRepository.findByEmail(senderEmail)
-                .orElseThrow(() -> new RuntimeException("Sender not found"));
-
-        User receiver = userRepository.findById(receiverId)
-                .orElseThrow(() -> new RuntimeException("Receiver not found"));
-
-        // Zaten istek varsa tekrar ekleme
-        boolean exists = friendRequestRepository
-                .findBySenderIdAndReceiverId(sender.getId(), receiver.getId())
-                .isPresent();
-        if (exists) {
-            throw new RuntimeException("Friend request already sent.");
-        }
-
-        FriendRequest request = FriendRequest.builder()
-                .sender(sender)
-                .receiver(receiver)
-                .status(FriendRequest.Status.PENDING)
-                .build();
-
-        friendRequestRepository.save(request);
-
-        return FriendRequestDTO.fromEntity(request);
+    public Long getUserIdByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getId();
     }
 }

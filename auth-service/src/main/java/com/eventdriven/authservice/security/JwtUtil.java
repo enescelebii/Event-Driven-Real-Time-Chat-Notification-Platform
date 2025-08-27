@@ -30,6 +30,17 @@ public class JwtUtil {
         
     }
 
+    // Refresh token üretmek için
+    public String generateRefreshToken(String email) {
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuer(ISSUER)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 604_800_000)) // 7 gün
+                .signWith(SECRET_KEY)
+                .compact();
+    }
+
     public static Claims getClaims(String token) {
         return Jwts
                 .parser()

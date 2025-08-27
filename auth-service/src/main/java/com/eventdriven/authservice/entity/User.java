@@ -32,4 +32,6 @@ public class User {
     @Column(name = "role")
     private Set<String> roles;
 
+    private String refreshToken;
+
 }
