@@ -1,6 +1,6 @@
 # 🚀 Event-Driven Real-Time Platform Not COMPLETED YET
 
-![Java](https://img.shields.io/badge/Java-17-blue?logo=java) ![Spring Boot](https://img.shields.io/badge/SpringBoot-3.2-green?logo=springboot) ![Kafka](https://img.shields.io/badge/Kafka-3.5-orange?logo=apachekafka) ![Redis](https://img.shields.io/badge/Redis-7-red?logo=redis) ![License](https://img.shields.io/badge/License-MIT-blue)
+![Java](https://img.shields.io/badge/Java-17-blue?logo=java) ![Spring Boot](https://img.shields.io/badge/SpringBoot-3.2-green?logo=springboot) ![Kafka](https://img.shields.io/badge/Kafka-3.5-orange?logo=apachekafka) ![Redis](https://img.shields.io/badge/Redis-7-red?logo=redis)
 
 > **Real-time chat & notification system** implemented with microservice architecture using Spring Boot, WebSocket, Kafka, and Redis.
 
@@ -57,9 +57,3 @@ gateway-service/
 * Real-time communication & notifications
 * Secure JWT authentication
 * Production-ready scaling & CI/CD friendly
-
----
-
-## 📝 License
-
-MIT License
