@@ -45,7 +45,6 @@ public class FriendRequestService {
     }
 
 
-
     public FriendRequestResponseDTO acceptRequest(String receiverEmail, Long requestId) {
         User receiver = userRepository.findByEmail(receiverEmail)
                 .orElseThrow(() -> new RuntimeException("Receiver not found"));
