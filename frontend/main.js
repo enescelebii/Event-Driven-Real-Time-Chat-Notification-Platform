@@ -64,3 +64,51 @@ if (loginForm) {
         }
     });
 }
+function openFriendsModal() {
+    const modal = document.getElementById('friendsModal');
+    const overlay = document.getElementById('friendsOverlay');
+
+    overlay.classList.add('show');
+    modal.classList.add('show');
+
+    // Prevent body scrolling when modal is open
+    document.body.style.overflow = 'hidden';
+}
+
+function closeFriendsModal() {
+    const modal = document.getElementById('friendsModal');
+    const overlay = document.getElementById('friendsOverlay');
+
+    overlay.classList.remove('show');
+    modal.classList.remove('show');
+
+    // Restore body scrolling
+    document.body.style.overflow = '';
+}
+
+// Close modal with ESC key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeFriendsModal();
+    }
+});
+
+// Add friend functionality
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('btn-primary')) {
+        const button = event.target;
+        const originalText = button.textContent;
+
+        if (originalText === 'Ekle') {
+            button.textContent = 'Eklendi';
+            button.classList.remove('btn-primary');
+            button.classList.add('btn-success');
+            button.disabled = true;
+
+            // Show success message
+            setTimeout(() => {
+                button.textContent = 'Arkadaş';
+            }, 1000);
+        }
+    }
+});

@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="homeStyle.css">
 </head>
+<script  src="/authGuard.js"  ></script>
 
 <body>
     <div class="container">
@@ -16,17 +17,14 @@
                 <li class="item">
                     <i class="fa fa-home" aria-hidden="true"></i>
                 </li>
-                <li class="item">
+                <li class="item" onclick="openFriendsModal()">
                     <i class="fa fa-user" aria-hidden="true"></i>
                 </li>
-                <li class="item">
+                <!-- <li class="item">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
-                </li>
+                </li> -->
                 <li class="item item-active">
                     <i class="fa fa-commenting" aria-hidden="true"></i>
-                </li>
-                <li class="item">
-                    <i class="fa fa-file" aria-hidden="true"></i>
                 </li>
                 <li class="item">
                     <i class="fa fa-cog" aria-hidden="true"></i>
@@ -164,4 +162,5 @@
         </section>
     </div>
 </body>
+<script  src="/main.js"  ></script>
 </html>
