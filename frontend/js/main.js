@@ -3,8 +3,8 @@ const loginForm = document.getElementById('loginForm');
 const registerForm = document.getElementById('registerForm');
 const backendUrl = 'http://localhost:8080/api/auth';
 
-if (registerForm){
-    registerForm.addEventListener('submit', async (event) => {
+if (registerForm) {
+    registerForm.addEventListener('submit', async(event) => {
         event.preventDefault();
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
@@ -13,8 +13,8 @@ if (registerForm){
         try {
             const res = await fetch(`http://localhost:8080/api/auth/register`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username,password,email}),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password, email }),
                 credentials: 'include'
             });
 
@@ -36,7 +36,7 @@ if (registerForm){
 }
 
 if (loginForm) {
-    loginForm.addEventListener('submit', async (e) => {
+    loginForm.addEventListener('submit', async(e) => {
         e.preventDefault();
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
@@ -44,8 +44,8 @@ if (loginForm) {
         try {
             const res = await fetch('http://localhost:8080/api/auth/login', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({email, password}),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
                 credentials: 'include'
             });
 
@@ -64,36 +64,49 @@ if (loginForm) {
         }
     });
 }
+
 function openFriendsModal() {
     const modal = document.getElementById('friendsModal');
     const overlay = document.getElementById('friendsOverlay');
 
-    overlay.classList.add('show');
     modal.classList.add('show');
-
-    // Prevent body scrolling when modal is open
+    overlay.classList.add('show');
     document.body.style.overflow = 'hidden';
+
+    // Overlay tıklayınca modal kapanır
+    overlay.addEventListener('click', closeFriendsModal);
 }
 
 function closeFriendsModal() {
     const modal = document.getElementById('friendsModal');
     const overlay = document.getElementById('friendsOverlay');
 
-    overlay.classList.remove('show');
-    modal.classList.remove('show');
+    // Kapanış animasyonu
+    modal.style.opacity = 0;
+    modal.style.transform = 'translateX(-50%) translateY(0) scale(0.8)';
 
-    // Restore body scrolling
-    document.body.style.overflow = '';
+    overlay.style.opacity = 0;
+
+    setTimeout(() => {
+        modal.classList.remove('show');
+        overlay.classList.remove('show');
+        document.body.style.overflow = '';
+        modal.style.opacity = '';
+        modal.style.transform = '';
+        overlay.style.opacity = '';
+
+        overlay.removeEventListener('click', closeFriendsModal);
+    }, 200); // Animasyon süresi ile uyumlu
 }
 
-// Close modal with ESC key
+// ESC tuşu ile kapatma
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape') {
         closeFriendsModal();
     }
 });
 
-// Add friend functionality
+// Arkadaş ekleme işlevselliği
 document.addEventListener('click', function(event) {
     if (event.target.classList.contains('btn-primary')) {
         const button = event.target;
@@ -105,7 +118,7 @@ document.addEventListener('click', function(event) {
             button.classList.add('btn-success');
             button.disabled = true;
 
-            // Show success message
+            // Başarı mesajını göster
             setTimeout(() => {
                 button.textContent = 'Arkadaş';
             }, 1000);

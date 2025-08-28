@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sohbet Uygulaması</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="homeStyle.css">
+    <link rel="stylesheet" href="/css/homeStyle.css">
+    <script src="/js/authGuard.js"></script>
 </head>
-<script  src="/authGuard.js"  ></script>
 
 <body>
     <div class="container">
@@ -17,13 +18,10 @@
                 <li class="item">
                     <i class="fa fa-home" aria-hidden="true"></i>
                 </li>
-                <li class="item" onclick="openFriendsModal()">
+                <li class="item" id="friendsButton" onclick="openFriendsModal(event)">
                     <i class="fa fa-user" aria-hidden="true"></i>
                 </li>
-                <!-- <li class="item">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </li> -->
-                <li class="item item-active">
+                <li class="item">
                     <i class="fa fa-commenting" aria-hidden="true"></i>
                 </li>
                 <li class="item">
@@ -39,7 +37,7 @@
                     <input type="text" placeholder="Ara...">
                 </div>
             </div>
-            
+
             <div class="discussion message-active">
                 <div class="photo" style="background-image: url(https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80);">
                     <div class="online"></div>
@@ -71,48 +69,6 @@
                 </div>
                 <div class="timer">42 dk</div>
             </div>
-
-            <div class="discussion">
-                <div class="photo" style="background-image: url(https://card.thomasdaubenton.com/img/photo.jpg);">
-                    <div class="online"></div>
-                </div>
-                <div class="desc-contact">
-                    <p class="name">Thomas Dbtn</p>
-                    <p class="message">See you tomorrow ! 🙂</p>
-                </div>
-                <div class="timer">2 saat</div>
-            </div>
-
-            <div class="discussion">
-                <div class="photo" style="background-image: url(https://images.unsplash.com/photo-1553514029-1318c9127859?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80);">
-                </div>
-                <div class="desc-contact">
-                    <p class="name">Elsie Amador</p>
-                    <p class="message">What the f**k is going on ?</p>
-                </div>
-                <div class="timer">1 gün</div>
-            </div>
-
-            <div class="discussion">
-                <div class="photo" style="background-image: url(https://images.unsplash.com/photo-1541747157478-3222166cf342?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=967&q=80);">
-                </div>
-                <div class="desc-contact">
-                    <p class="name">Billy Southard</p>
-                    <p class="message">Ahahah 😂</p>
-                </div>
-                <div class="timer">4 gün</div>
-            </div>
-
-            <div class="discussion">
-                <div class="photo" style="background-image: url(https://images.unsplash.com/photo-1435348773030-a1d74f568bc2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80);">
-                    <div class="online"></div>
-                </div>
-                <div class="desc-contact">
-                    <p class="name">Paul Walker</p>
-                    <p class="message">You can't see me</p>
-                </div>
-                <div class="timer">1 hafta</div>
-            </div>
         </section>
 
         <section class="chat">
@@ -121,7 +77,7 @@
                 <p class="name">Megan Leib</p>
                 <i class="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>
             </div>
-            
+
             <div class="messages-chat">
                 <div class="message">
                     <div class="photo" style="background-image: url(https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80);">
@@ -129,22 +85,22 @@
                     </div>
                     <p class="text">Hi, how are you ?</p>
                 </div>
-                
+
                 <div class="message text-only">
                     <p class="text">What are you doing tonight ? Want to go take a drink ?</p>
                 </div>
                 <p class="time">14:58</p>
-                
+
                 <div class="message response">
                     <div class="photo" style="background-image: url(https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80);"></div>
                     <p class="text">Hey Megan ! It's been a while 😃</p>
                 </div>
-                
+
                 <div class="message response text-only">
                     <p class="text">When can we meet ?</p>
                 </div>
                 <p class="response-time time">15:04</p>
-                
+
                 <div class="message">
                     <div class="photo" style="background-image: url(https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80);">
                         <div class="online"></div>
@@ -153,7 +109,7 @@
                 </div>
                 <p class="time">15:09</p>
             </div>
-            
+
             <div class="footer-chat">
                 <i class="icon fa fa-smile-o" aria-hidden="true"></i>
                 <input type="text" class="write-message" placeholder="Mesajınızı buraya yazın...">
@@ -161,6 +117,110 @@
             </div>
         </section>
     </div>
+
+    <!-- Modal Overlay -->
+    <div class="friends-modal-overlay" id="friendsOverlay" onclick="closeFriendsModal()"></div>
+
+    <!-- Friends Modal -->
+    <div class="friends-modal" id="friendsModal">
+        <div class="friends-modal-header">
+            <h4>
+                <span><i class="fa fa-users"></i> Yakındaki Arkadaşlar</span>
+                <button class="close-btn" onclick="closeFriendsModal()">&times;</button>
+            </h4>
+        </div>
+        <div class="friends-modal-body">
+            <div class="people-nearby">
+                <div class="nearby-user">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo-lg">
+                    <div class="user-info">
+                        <h6><a href="#" class="profile-link">Sophia Page</a></h6>
+                        <p class="job">Software Engineer</p>
+                        <p class="distance">500m uzaklıkta</p>
+                    </div>
+                    <button class="btn-primary">Ekle</button>
+                </div>
+                <div class="nearby-user">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="user" class="profile-photo-lg">
+                    <div class="user-info">
+                        <h6><a href="#" class="profile-link">Emma Johnson</a></h6>
+                        <p class="job">Model at Fashion</p>
+                        <p class="distance">800m uzaklıkta</p>
+                    </div>
+                    <button class="btn-primary">Ekle</button>
+                </div>
+
+                <div class="nearby-user">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="user" class="profile-photo-lg">
+                    <div class="user-info">
+                        <h6><a href="#" class="profile-link">Nora Wilson</a></h6>
+                        <p class="job">Writer at Newspaper</p>
+                        <p class="distance">2.5km uzaklıkta</p>
+                    </div>
+                    <button class="btn-primary">Ekle</button>
+                </div>
+                <div class="nearby-user">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo-lg">
+                    <div class="user-info">
+                        <h6><a href="#" class="profile-link">Sophia Page</a></h6>
+                        <p class="job">Software Engineer</p>
+                        <p class="distance">500m uzaklıkta</p>
+                    </div>
+                    <button class="btn-primary">Ekle</button>
+                </div>
+                <div class="nearby-user">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="user" class="profile-photo-lg">
+                    <div class="user-info">
+                        <h6><a href="#" class="profile-link">Emma Johnson</a></h6>
+                        <p class="job">Model at Fashion</p>
+                        <p class="distance">800m uzaklıkta</p>
+                    </div>
+                    <button class="btn-primary">Ekle</button>
+                </div>
+
+                <div class="nearby-user">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="user" class="profile-photo-lg">
+                    <div class="user-info">
+                        <h6><a href="#" class="profile-link">Nora Wilson</a></h6>
+                        <p class="job">Writer at Newspaper</p>
+                        <p class="distance">2.5km uzaklıkta</p>
+                    </div>
+                    <button class="btn-primary">Ekle</button>
+                </div>
+                <div class="nearby-user">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo-lg">
+                    <div class="user-info">
+                        <h6><a href="#" class="profile-link">Sophia Page</a></h6>
+                        <p class="job">Software Engineer</p>
+                        <p class="distance">500m uzaklıkta</p>
+                    </div>
+                    <button class="btn-primary">Ekle</button>
+                </div>
+                <div class="nearby-user">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="user" class="profile-photo-lg">
+                    <div class="user-info">
+                        <h6><a href="#" class="profile-link">Emma Johnson</a></h6>
+                        <p class="job">Model at Fashion</p>
+                        <p class="distance">800m uzaklıkta</p>
+                    </div>
+                    <button class="btn-primary">Ekle</button>
+                </div>
+
+                <div class="nearby-user">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="user" class="profile-photo-lg">
+                    <div class="user-info">
+                        <h6><a href="#" class="profile-link">Nora Wilson</a></h6>
+                        <p class="job">Writer at Newspaper</p>
+                        <p class="distance">2.5km uzaklıkta</p>
+                    </div>
+                    <button class="btn-primary">Ekle</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/main.js">
+    </script>
 </body>
-<script  src="/main.js"  ></script>
+
 </html>
