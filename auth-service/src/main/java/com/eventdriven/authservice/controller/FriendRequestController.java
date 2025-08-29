@@ -4,8 +4,10 @@ import com.eventdriven.authservice.dto.*;
 import com.eventdriven.authservice.service.AuthService;
 import com.eventdriven.authservice.service.FriendRequestService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,11 +22,18 @@ public class FriendRequestController {
     private final AuthService authService;
 
 
-    //  Arkadaşlık isteği gönder
-    @PostMapping("/send/{receiverId}")
-    public FriendRequestResponseDTO sendFriendRequest(@PathVariable Long receiverId, Authentication authentication) {
+    //  id ile Arkadaşlık isteği gönder
+    @PostMapping("/send/id/{receiverId}")
+    public FriendRequestResponseDTO sendFriendRequest(@PathVariable Long receiverId , Authentication authentication) {
         String senderEmail = authentication.getName();
         return friendRequestService.sendFriendRequest(senderEmail, receiverId);
+    }
+
+    // Kullanıcı adı ile Arkadaşlık isteği gönder
+    @PostMapping("/send/username/{username}")
+    public FriendRequestResponseDTO sendFriendRequestByUsername(@PathVariable String username, Authentication authentication) {
+        String senderEmail = authentication.getName();
+        return friendRequestService.sendFriendRequestByUsername(senderEmail, username);
     }
 
     //  İsteği kabul et

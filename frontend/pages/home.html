@@ -5,27 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sohbet Uygulaması</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/homeStyle.css">
     <script src="/js/authGuard.js"></script>
+
 </head>
 
 <body>
     <div class="container">
         <nav class="menu">
-            <ul class="items">
-                <li class="item">
-                    <i class="fa fa-home" aria-hidden="true"></i>
+            <ul class="items list-unstyled m-0 p-0">
+                <li class="item d-flex justify-content-center align-items-center" style="height:60px;">
+                    <i class="fa fa-home"></i>
                 </li>
-                <li class="item" id="friendsButton" onclick="openFriendsModal(event)">
-                    <i class="fa fa-user" aria-hidden="true"></i>
+                <li onclick="openProfileModal(event)" class="item d-flex justify-content-center align-items-center" style="height:60px;" id="friendsButton">
+                    <i class="fa fa-user"></i>
                 </li>
-                <li class="item">
-                    <i class="fa fa-commenting" aria-hidden="true"></i>
+                <li onclick="openFriendsModal(event)" class="item d-flex justify-content-center align-items-center" style="height:60px;">
+                    <i class="fa fa-commenting"></i>
                 </li>
-                <li class="item">
-                    <i class="fa fa-cog" aria-hidden="true"></i>
+                <li class="item d-flex justify-content-center align-items-center" style="height:60px;">
+                    <i class="fa fa-cog"></i>
                 </li>
             </ul>
         </nav>
@@ -76,6 +78,7 @@
                 <i class="icon fa fa-user-o" aria-hidden="true"></i>
                 <p class="name">Megan Leib</p>
                 <i class="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>
+
             </div>
 
             <div class="messages-chat">
@@ -124,10 +127,11 @@
     <!-- Friends Modal -->
     <div class="friends-modal" id="friendsModal">
         <div class="friends-modal-header">
-            <h4>
-                <span><i class="fa fa-users"></i> Yakındaki Arkadaşlar</span>
-                <button class="close-btn" onclick="closeFriendsModal()">&times;</button>
-            </h4>
+
+            <i class="fa fa-chain"></i>
+            <span>Arkadaşlar</span>
+            <button class="close-btn" onclick="closeFriendsModal()">&times;</button>
+
         </div>
         <div class="friends-modal-body">
             <div class="people-nearby">
@@ -219,8 +223,34 @@
         </div>
     </div>
 
+    <!-- Profile Modal Overlay -->
+    <div class="friends-modal-overlay" id="profileOverlay" onclick="closeProfileModal()"></div>
+    <!-- profile Modal -->
+    <div class="friends-modal" id="profileModal">
+        <div class="friends-modal-header">
+
+            <i class="fa fa-user"></i>
+            <span>My profile</span>
+            <button class="close-btn" onclick="closeProfileModal()">&times;</button>
+
+        </div>
+        <div class="profile-modal-body">
+            <div class="people-nearby">
+                <div class="card"><img src="https://avatars.githubusercontent.com/u/110825876?s=400&u=faae8f635710789093f98ec6fb446e80fc3d912e&v=4" alt="gaospecial">
+                    <div>
+                        <i class="fa fa-pencil"></i>
+                        <h4 class="profileUsername">Enes Çelebi</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
     <script src="/js/main.js">
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
 </body>
 
 </html>

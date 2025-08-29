@@ -44,6 +44,27 @@ public class FriendRequestService {
         return FriendRequestResponseDTO.fromEntity(request);
     }
 
+    public FriendRequestResponseDTO sendFriendRequestByUsername(String senderEmail, String username) {
+        User sender  = userRepository.findByEmail(senderEmail)
+                .orElseThrow(() -> new RuntimeException("Sender not found"));
+        User receiver = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Receiver not found"));
+
+        // Sadece PENDING veya ACCEPTED istekleri engelle
+        friendRequestRepository.findBySenderIdAndReceiverId(sender.getId(), receiver.getId())
+                .filter(req -> req.getStatus() != FriendRequest.Status.PENDING)
+                .ifPresent(req -> {
+                    throw new RuntimeException("Friend request already sent.");
+                });
+
+        FriendRequest request = FriendRequest.builder()
+                .sender(sender)
+                .receiver(receiver)
+                .status(FriendRequest.Status.PENDING)
+                .build();
+        friendRequestRepository.save(request);
+        return FriendRequestResponseDTO.fromEntity(request);
+    }
 
     public FriendRequestResponseDTO acceptRequest(String receiverEmail, Long requestId) {
         User receiver = userRepository.findByEmail(receiverEmail)
@@ -124,4 +145,6 @@ public class FriendRequestService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return user.getId();
     }
+
+
 }

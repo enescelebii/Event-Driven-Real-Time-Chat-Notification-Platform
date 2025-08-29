@@ -29,13 +29,14 @@ body {
 .menu {
     width: 80px;
     background-color: #ededed;
-    display: flex;
+    display: block;
     flex-direction: column;
 }
 
 .items {
     list-style: none;
     margin-top: 20px;
+    flex-direction: column;
 }
 
 .item {
@@ -436,4 +437,29 @@ body {
 
 .fa {
     font-size: xx-large;
+}
+
+.card img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: fill;
+    position: relative;
+    margin-left: 30%;
+    margin-bottom: 0.75rem;
+    margin-top: 20px;
+}
+
+.profileUsername {
+    font-size: x-large;
+    position: relative;
+    text-align: center;
+}
+
+.fa.fa-pencil {
+    display: flex;
+    position: fixed;
+    left: 65%;
+    bottom: 58%;
+    cursor: pointer;
 }

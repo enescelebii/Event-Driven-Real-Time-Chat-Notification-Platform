@@ -125,3 +125,37 @@ document.addEventListener('click', function(event) {
         }
     }
 });
+
+function openProfileModal() {
+    const modal = document.getElementById('profileModal');
+    const overlay = document.getElementById('profileOverlay');
+
+    modal.classList.add('show');
+    overlay.classList.add('show');
+    document.body.style.overflow = 'hidden';
+
+    // Overlay tıklayınca modal kapanır
+    overlay.addEventListener('click', closeFriendsModal);
+}
+
+function closeProfileModal() {
+    const modal = document.getElementById('profileModal');
+    const overlay = document.getElementById('profileOverlay');
+
+    // Kapanış animasyonu
+    modal.style.opacity = 0;
+    modal.style.transform = 'translateX(-50%) translateY(0) scale(0.8)';
+
+    overlay.style.opacity = 0;
+
+    setTimeout(() => {
+        modal.classList.remove('show');
+        overlay.classList.remove('show');
+        document.body.style.overflow = '';
+        modal.style.opacity = '';
+        modal.style.transform = '';
+        overlay.style.opacity = '';
+
+        overlay.removeEventListener('click', closeProfileModal);
+    }, 200); // Animasyon süresi ile uyumlu
+}
