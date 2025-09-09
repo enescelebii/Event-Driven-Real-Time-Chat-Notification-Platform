@@ -20,7 +20,7 @@
     --bs-gray: #6c757d;
     --bs-gray-dark: #343a40;
     --bs-primary: #EB1616;
-    --bs-secondary: #191C24;
+    --bs-secondary: #a4a4a4;
     --bs-success: #198754;
     --bs-info: #0dcaf0;
     --bs-warning: #ffc107;
@@ -148,7 +148,7 @@ h6,
 
 p {
     margin-top: 0;
-    margin-bottom: 1rem
+    margin-bottom: 1rem;
 }
 
 abbr[title],
@@ -7928,7 +7928,7 @@ fieldset:disabled .btn {
 }
 
 .bg-secondary {
-    background-color: #191C24 !important
+    background-color: #0dcaf0 !important
 }
 
 .bg-success {

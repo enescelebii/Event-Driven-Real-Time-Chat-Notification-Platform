@@ -2,10 +2,7 @@ package com.eventdriven.authservice.controller;
 
 
 
-import com.eventdriven.authservice.dto.LoginRequest;
-import com.eventdriven.authservice.dto.RefreshTokenRequest;
-import com.eventdriven.authservice.dto.UserDTO;
-import com.eventdriven.authservice.dto.AuthResponse;
+import com.eventdriven.authservice.dto.*;
 import com.eventdriven.authservice.entity.User;
 import com.eventdriven.authservice.repository.UserRepository;
 import com.eventdriven.authservice.security.JwtUtil;
@@ -56,7 +53,7 @@ public class AuthController {
 
     // Token üzerinden kullanıcı bilgisini döner
     @GetMapping("/me")
-    public ResponseEntity<UserDTO> getMe(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<UserResponseDTO> getMe(@RequestHeader("Authorization") String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -67,14 +64,9 @@ public class AuthController {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        UserDTO userDTO = new UserDTO(
-                user.getId(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getPassword()
-        );
+        UserResponseDTO userResponseDTO = new UserResponseDTO(user.getId(), user.getUsername(), user.getEmail());
 
-        return ResponseEntity.ok(userDTO);
+        return ResponseEntity.ok(userResponseDTO);
     }
 
 

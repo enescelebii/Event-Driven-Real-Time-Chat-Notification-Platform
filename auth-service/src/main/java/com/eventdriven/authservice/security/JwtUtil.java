@@ -24,7 +24,7 @@ public class JwtUtil {
                 .subject(email)
                 .issuer(ISSUER)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 300_000))// 5 min
+                .expiration(new Date(System.currentTimeMillis() + 15000_000))// 5 min
                 .signWith(SECRET_KEY)
                 .compact();
         

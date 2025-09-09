@@ -20,6 +20,7 @@ public class FriendRequestService {
     private final FriendRequestRepository friendRequestRepository;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final NotificationService notificationService;
 
     public FriendRequestResponseDTO sendFriendRequest(String senderEmail, Long receiverId) {
         User sender = userRepository.findByEmail(senderEmail)
@@ -77,6 +78,11 @@ public class FriendRequestService {
 
         request.setStatus(FriendRequest.Status.ACCEPTED);
         friendRequestRepository.save(request);
+
+        // WebSocket ile bildirim gönder
+        notificationService.notifyFriendAdded(receiver.getId(), request.getSender());
+        notificationService.notifyFriendAdded(request.getSender().getId(), receiver);
+
 
         return FriendRequestResponseDTO.fromEntity(request);
     }

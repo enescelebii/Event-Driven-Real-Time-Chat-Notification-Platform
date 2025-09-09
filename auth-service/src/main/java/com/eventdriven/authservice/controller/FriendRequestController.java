@@ -3,11 +3,10 @@ package com.eventdriven.authservice.controller;
 import com.eventdriven.authservice.dto.*;
 import com.eventdriven.authservice.service.AuthService;
 import com.eventdriven.authservice.service.FriendRequestService;
+import com.eventdriven.authservice.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +19,7 @@ public class FriendRequestController {
 
     private final FriendRequestService friendRequestService;
     private final AuthService authService;
+    private final UserService userService;
 
 
     //  id ile Arkadaşlık isteği gönder
@@ -81,5 +81,11 @@ public class FriendRequestController {
         return friendRequestService.areFriends(user1Id, user2Id);
     }
 
+    // Kullanıcı adıyla arama
+    @GetMapping("/search")
+    public List<UserResponseDTO> searchUsers(@RequestParam String username, Authentication authentication) {
+        String currentUserEmail = authentication.getName();
+        return userService.searchByUsername(username, currentUserEmail);
+    }
 
 }

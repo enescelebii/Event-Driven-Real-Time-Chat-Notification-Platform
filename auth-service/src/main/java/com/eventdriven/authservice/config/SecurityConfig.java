@@ -55,7 +55,8 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**",
+                                "/ws/**").permitAll()
                         .requestMatchers("/api/friends/**").authenticated() // friends işlemleri token ile
                         .anyRequest().authenticated()
                 )
